@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Glossed by YVÉ — Booking</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: #f3eee8;
+      color: #3b3028;
+    }
+
+    .wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .logo {
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 6px;
+      font-size: 26px;
+    }
+
+    .sublogo {
+      text-align: center;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: #9b8a7a;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #f9f5f0;
+      border-radius: 18px;
+      padding: 25px 22px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+      margin-bottom: 25px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+      color: #4a3b30;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, #c9b7a3, transparent);
+      margin: 12px 0 18px;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+      margin: 6px 0;
+    }
+
+    .price-row span:first-child {
+      text-align: left;
+    }
+
+    .price-row span:last-child {
+      text-align: right;
+      color: #7b6857;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #8f7c6b;
+      margin-top: 14px;
+    }
+
+    .loyalty {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #efe2d4;
+      font-size: 13px;
+      text-align: center;
+      color: #5b4737;
+    }
+
+    .section-heading {
+      text-align: center;
+      font-size: 18px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin: 35px 0 10px;
+      color: #4a3b30;
+    }
+
+    .section-sub {
+      text-align: center;
+      font-size: 13px;
+      color: #8f7c6b;
+      margin-bottom: 18px;
+    }
+
+    form label {
+      display: block;
+      font-size: 14px;
+      margin-top: 14px;
+      margin-bottom: 4px;
+      color: #4a3b30;
+    }
+
+    form input,
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 11px 10px;
+      border-radius: 10px;
+      border: 1px solid #d4c4b4;
+      background: #fdf9f4;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    form textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      margin-top: 22px;
+      width: 100%;
+      padding: 13px;
+      border-radius: 999px;
+      border: none;
+      background: #c9a98a;
+      color: white;
+      font-size: 15px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #b89474;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #a08f7f;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .wrapper {
+        padding: 20px 14px 40px;
+      }
+
+      .card {
+        padding: 20px 18px;
+      }
+
+      .logo {
+        font-size: 22px;
+        letter-spacing: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <!-- LOGO / BRAND -->
+    <div class="logo">YVÉ STUDIO</div>
+    <div class="sublogo">Glossed by YVÉ</div>
+
+    <!-- INFO / PRICE LIST CARD -->
+    <div class="card">
+      <div class="card-title">Price List</div>
+      <div class="divider"></div>
+
+      <div class="price-row">
+        <span>Manicure</span>
+        <span>$10</span>
+      </div>
+      <div class="price-row">
+        <span>Builder Gel Manicure</span>
+        <span>$20</span>
+      </div>
+      <div class="price-row">
+        <span>+ Color / Design</span>
+        <span>+ $5</span>
+      </div>
+      <div class="price-row">
+        <span>Acrylic Full Set</span>
+        <span>$30</span>
+      </div>
+      <div class="price-row">
+        <span>Acrylic Toes</span>
+        <span>$35</span>
+      </div>
+      <div class="price-row">
+        <span>Soak Off</span>
+        <span>$10</span>
+      </div>
+
+      <div class="note">
+        Please arrive with bare nails or book a soak off if needed.
+      </div>
+
+      <div class="loyalty">
+        Loyalty card available — enjoy 30% off your 6th stamp.
+      </div>
+    </div>
+
+    <!-- BOOKING SECTION HEADING -->
+    <div class="section-heading">Book an Appointment</div>
+    <div class="section-sub">
+      Fill out the form below to request an appointment.  
+      You’ll receive a confirmation or follow‑up by email or text.
+    </div>
+
+    <!-- BOOKING FORM CARD -->
+    <div class="card">
+      <form action="https://formsubmit.co/glossedbyyv@gmail.com" method="POST">
+        <!-- FormSubmit settings -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_subject" value="New Appointment Request — Glossed by YVÉ">
+
+        <label>Name</label>
+        <input type="text" name="name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
+
+        <label>Phone Number</label>
+        <input type="text" name="phone" required>
+
+        <label>Service</label>
+        <select name="service" required>
+          <option value="">Select a service</option>
+          <option>Manicure — $10</option>
+          <option>Builder Gel Manicure — $20</option>
+          <option>+ Color / Design — +$5</option>
+          <option>Acrylic Full Set — $30</option>
+          <option>Acrylic Toes — $35</option>
+          <option>Soak Off — $10</option>
+        </select>
+
+        <label>Preferred Date</label>
+        <input type="date" name="date" required>
+
+        <label>Preferred Time</label>
+        <input type="time" name="time" required>
+
+        <label>Notes (optional)</label>
+        <textarea name="notes" placeholder="Inspo, length, shape, allergies, etc."></textarea>
+
+        <button type="submit">Submit Booking Request</button>
+      </form>
+    </div>
+
+    <div class="footer">
+      Glossed by YVÉ · Austin, TX · Instagram: @yourhandle
+    </div>
+  </div>
+
+</body>
+</html>
