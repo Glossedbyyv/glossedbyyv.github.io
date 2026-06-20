@@ -1,597 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Glossedbyyv Loyalty Card</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
+<meta charset="UTF-8">
+<title>Glossed Loyalty Card</title>
+<style>
     body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #ffe6f3;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 20px;
-      color: #3b1b2a;
+        font-family: Arial, sans-serif;
+        background: #ffd6e8;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
 
     .container {
-      max-width: 420px;
-      width: 100%;
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      padding: 20px 20px 28px;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 0 0 4px;
-      font-size: 24px;
-      letter-spacing: 2px;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 12px;
-      text-transform: uppercase;
-      color: #b35a8a;
-      margin-bottom: 16px;
-    }
-
-    .auth-section, .card-section, .admin-section {
-      margin-bottom: 18px;
-      border-radius: 14px;
-      padding: 12px 12px 14px;
-      background: #ffeef7;
-    }
-
-    .section-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #b35a8a;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      margin-bottom: 4px;
+        width: 360px;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        text-align: center;
     }
 
     input {
-      width: 100%;
-      padding: 8px 10px;
-      border-radius: 8px;
-      border: 1px solid #f2b7d7;
-      font-size: 13px;
-      margin-bottom: 8px;
-      box-sizing: border-box;
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 1px solid #ff9ecb;
     }
 
     button {
-      border: none;
-      border-radius: 999px;
-      padding: 8px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      background: #ff7fb5;
-      color: white;
-      font-weight: 600;
-      margin-right: 6px;
-      margin-top: 4px;
+        width: 95%;
+        padding: 12px;
+        background: #ff7fbf;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
     }
 
-    button.secondary {
-      background: #ffffff;
-      color: #ff7fb5;
-      border: 1px solid #ff7fb5;
+    #card {
+        width: 100%;
+        height: 220px;
+        background-image: url('loyaltycard.png');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        margin-top: 15px;
+        border-radius: 12px;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: default;
+    .stamp {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        position: absolute;
+        background: rgba(255,255,255,0.0);
+        cursor: pointer;
     }
 
-    .row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
+    /* Stamp positions */
+    #s1 { top: 75px; left: 35px; }
+    #s2 { top: 75px; left: 150px; }
+    #s3 { top: 75px; left: 265px; }
+    #s4 { top: 145px; left: 35px; }
+    #s5 { top: 145px; left: 150px; }
+    #s6 { top: 145px; left: 265px; }
+
+    /* Reward text overlays */
+    .reward-text {
+        position: absolute;
+        width: 55px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+        text-shadow: 0 0 4px rgba(0,0,0,0.6);
+        pointer-events: none;
     }
 
-    .small-text {
-      font-size: 11px;
-      color: #7a4a63;
-    }
-
-    .status {
-      font-size: 11px;
-      margin-top: 4px;
-      min-height: 14px;
-    }
-
-    .status.ok {
-      color: #2e7d32;
-    }
-
-    .status.err {
-      color: #c62828;
-    }
-
-    .card {
-      border-radius: 18px;
-      padding: 16px 14px 14px;
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #ffc1dd, #ffe6f3);
-      /* If you have your exact card image, you can overlay it:
-      background-image: url("YOUR_CARD_IMAGE.png");
-      background-size: cover;
-      background-position: center;
-      */
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      bottom: -20px;
-      right: -10px;
-      width: 90px;
-      height: 90px;
-      background: radial-gradient(circle at center, #ffb6d9 0, #ffb6d9 40%, transparent 60%);
-      opacity: 0.7;
-      filter: blur(2px);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .card-subtitle {
-      font-size: 10px;
-      text-transform: uppercase;
-      color: #7a4a63;
-    }
-
-    .socials {
-      font-size: 10px;
-      text-align: right;
-    }
-
-    .socials a {
-      color: #7a4a63;
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .stamps-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .stamp-circle {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 2px dashed #ff9ac7;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      text-align: center;
-      color: #7a4a63;
-      background: rgba(255,255,255,0.7);
-      margin: 0 auto;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stamp-circle.filled {
-      border-style: solid;
-      background: #ff7fb5;
-      color: white;
-    }
-
-    .stamp-circle.reward {
-      border-color: #ff5c9b;
-      font-weight: 700;
-    }
-
-    .stamp-number {
-      position: absolute;
-      top: 4px;
-      left: 6px;
-      font-size: 10px;
-      opacity: 0.7;
-    }
-
-    .reward-banner {
-      font-size: 11px;
-      text-align: center;
-      margin-top: 4px;
-      color: #7a4a63;
-      position: relative;
-      z-index: 1;
-    }
-
-    .reward-banner strong {
-      color: #c2185b;
-    }
-
-    .user-info {
-      font-size: 11px;
-      margin-top: 4px;
-      color: #7a4a63;
-      position: relative;
-      z-index: 1;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    #r3 { top: 95px; left: 265px; }
+    #r6 { top: 165px; left: 265px; }
 
     /* Heart animation */
     .heart {
-      position: absolute;
-      font-size: 18px;
-      color: #ff5c9b;
-      animation: floatUp 0.9s ease-out forwards;
-      pointer-events: none;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+        position: absolute;
+        font-size: 20px;
+        color: #ff4f9a;
+        animation: floatUp 1s ease-out forwards;
     }
 
     @keyframes floatUp {
-      0% {
-        opacity: 1;
-        transform: translate(-50%, -10%) scale(0.8);
-      }
-      60% {
-        opacity: 1;
-        transform: translate(-50%, -40%) scale(1.1);
-      }
-      100% {
-        opacity: 0;
-        transform: translate(-50%, -70%) scale(0.9);
-      }
+        0% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-40px); }
     }
-  </style>
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>LOYALTY CARD</h1>
-    <div class="subtitle">3rd stamp 20% off · 6th stamp 40% off</div>
 
-    <!-- AUTH SECTION -->
-    <div class="auth-section">
-      <div class="section-title">Account</div>
-      <label for="email">Email</label>
-      <input id="email" type="email" placeholder="customer@email.com" />
-      <label for="password">Password</label>
-      <input id="password" type="password" placeholder="••••••••" />
+<div class="container" id="authBox">
+    <h2>Glossed Loyalty Login</h2>
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <button onclick="signup()">Sign Up</button>
+</div>
 
-      <div class="row">
-        <button id="signupBtn">Sign up</button>
-        <button id="loginBtn" class="secondary">Log in</button>
-        <button id="logoutBtn" class="secondary hidden">Log out</button>
-      </div>
-      <div id="authStatus" class="status"></div>
+<div class="container" id="cardBox" style="display:none;">
+    <h2>Your Loyalty Card</h2>
+
+    <div id="card">
+        <div class="stamp" id="s1" onclick="attemptStamp(1)"></div>
+        <div class="stamp" id="s2" onclick="attemptStamp(2)"></div>
+        <div class="stamp" id="s3" onclick="attemptStamp(3)"></div>
+        <div class="stamp" id="s4" onclick="attemptStamp(4)"></div>
+        <div class="stamp" id="s5" onclick="attemptStamp(5)"></div>
+        <div class="stamp" id="s6" onclick="attemptStamp(6)"></div>
+
+        <div class="reward-text" id="r3">20% OFF</div>
+        <div class="reward-text" id="r6">40% OFF</div>
     </div>
 
-    <!-- CARD SECTION -->
-    <div class="card-section">
-      <div class="section-title">Your card</div>
-      <div class="card">
-        <div class="card-header">
-          <div>
-            <div class="card-title">LOYALTY CARD</div>
-            <div class="card-subtitle">Enjoy 40% off your 6th stamp</div>
-          </div>
-          <div class="socials">
-            <div>@Glossedbyyv</div>
-            <a href="https://www.instagram.com/glossedbyyv" target="_blank">Instagram</a> ·
-            <a href="https://www.tiktok.com/@glossedbyyve" target="_blank">TikTok</a>
-          </div>
-        </div>
+    <button onclick="logout()">Logout</button>
+</div>
 
-        <div class="stamps-grid" id="stampsGrid">
-          <!-- Circles generated by JS -->
-        </div>
+<script>
+let currentUser = null;
+const OWNER_PIN = "3923";
 
-        <div class="reward-banner" id="rewardBanner">
-          No reward yet — keep collecting stamps 💅
-        </div>
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
 
-        <div class="user-info" id="userInfo">
-          Not logged in.
-        </div>
-      </div>
-    </div>
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users") || "{}");
+}
 
-    <!-- ADMIN SECTION -->
-    <div class="admin-section">
-      <div class="section-title">Stamp (Owner only)</div>
-      <div class="small-text">
-        To add a stamp, enter your secret PIN and the customer’s email.  
-        PIN is only for you.
-      </div>
-      <label for="adminPin">Owner PIN</label>
-      <input id="adminPin" type="password" placeholder="Owner PIN" />
-      <label for="stampEmail">Customer email to stamp</label>
-      <input id="stampEmail" type="email" placeholder="customer@email.com" />
+function signup() {
+    let email = email.value;
+    let pass = password.value;
+    let users = getUsers();
 
-      <button id="stampBtn">Add 1 stamp</button>
-      <div id="adminStatus" class="status"></div>
-      <div class="small-text">
-        Reward rules: 3rd stamp = <strong>20% off</strong>, 6th stamp = <strong>40% off</strong>.
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // OWNER PIN
-    const OWNER_PIN = "3923";
-
-    // Simple "database" using localStorage
-    // Structure: localStorage["gb_users"] = JSON string of { [email]: {password, stamps} }
-    function getUsers() {
-      const raw = localStorage.getItem("gb_users");
-      if (!raw) return {};
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return {};
-      }
-    }
-
-    function saveUsers(users) {
-      localStorage.setItem("gb_users", JSON.stringify(users));
-    }
-
-    let currentUserEmail = null;
-
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    const signupBtn = document.getElementById("signupBtn");
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const authStatus = document.getElementById("authStatus");
-
-    const stampsGrid = document.getElementById("stampsGrid");
-    const rewardBanner = document.getElementById("rewardBanner");
-    const userInfo = document.getElementById("userInfo");
-
-    const adminPinInput = document.getElementById("adminPin");
-    const stampEmailInput = document.getElementById("stampEmail");
-    const stampBtn = document.getElementById("stampBtn");
-    const adminStatus = document.getElementById("adminStatus");
-
-    // Heart animation
-    function showHeartOnStamp(stampIndex) {
-      const circles = stampsGrid.children;
-      if (!circles[stampIndex - 1]) return;
-      const circle = circles[stampIndex - 1];
-
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.textContent = "♥";
-
-      circle.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 900);
-    }
-
-    // Render stamps
-    function renderStamps(stampCount) {
-      stampsGrid.innerHTML = "";
-      const rewards = { 3: "20% OFF", 6: "40% OFF" };
-
-      for (let i = 1; i <= 6; i++) {
-        const circle = document.createElement("div");
-        circle.className = "stamp-circle";
-        if (i <= stampCount) {
-          circle.classList.add("filled");
-        }
-        if (rewards[i]) {
-          circle.classList.add("reward");
-        }
-
-        const num = document.createElement("div");
-        num.className = "stamp-number";
-        num.textContent = i;
-        circle.appendChild(num);
-
-        const text = document.createElement("div");
-        text.textContent = rewards[i] || "";
-        circle.appendChild(text);
-
-        stampsGrid.appendChild(circle);
-      }
-
-      if (stampCount >= 6) {
-        rewardBanner.innerHTML = "🎉 You unlocked <strong>40% OFF</strong>! Use it on your next visit.";
-      } else if (stampCount >= 3) {
-        rewardBanner.innerHTML = "✨ You unlocked <strong>20% OFF</strong>! Keep going to reach 40% off.";
-      } else {
-        rewardBanner.textContent = "No reward yet — keep collecting stamps 💅";
-      }
-    }
-
-    function loadUser(email) {
-      const users = getUsers();
-      const user = users[email.toLowerCase()];
-      if (!user) {
-        renderStamps(0);
-        userInfo.textContent = `Logged in as ${email} · Stamps: 0`;
+    if (users[email]) {
+        alert("Account already exists");
         return;
-      }
-      const stamps = user.stamps || 0;
-      renderStamps(stamps);
-      userInfo.textContent = `Logged in as ${email} · Stamps: ${stamps}`;
     }
 
-    // Auth handlers
-    signupBtn.addEventListener("click", () => {
-      authStatus.textContent = "";
-      authStatus.className = "status";
+    users[email] = { password: pass, stamps: [] };
+    saveUsers(users);
+    alert("Account created");
+}
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
+function login() {
+    let emailVal = email.value;
+    let passVal = password.value;
+    let users = getUsers();
 
-      if (!email || !password) {
-        authStatus.textContent = "Enter email and password.";
-        authStatus.classList.add("err");
+    if (!users[emailVal] || users[emailVal].password !== passVal) {
+        alert("Invalid login");
         return;
-      }
+    }
 
-      const users = getUsers();
-      const key = email.toLowerCase();
+    currentUser = emailVal;
+    authBox.style.display = "none";
+    cardBox.style.display = "block";
+    loadStamps();
+}
 
-      if (users[key]) {
-        authStatus.textContent = "Account already exists. Try logging in.";
-        authStatus.classList.add("err");
-        return;
-      }
+function logout() {
+    currentUser = null;
+    authBox.style.display = "block";
+    cardBox.style.display = "none";
+}
 
-      users[key] = { password, stamps: 0 };
-      saveUsers(users);
+function loadStamps() {
+    let users = getUsers();
+    let stamps = users[currentUser].stamps;
 
-      currentUserEmail = email;
-      authStatus.textContent = "Account created & logged in.";
-      authStatus.classList.add("ok");
-
-      loginBtn.classList.add("hidden");
-      signupBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
-
-      loadUser(email);
+    stamps.forEach(num => {
+        let spot = document.getElementById("s" + num);
+        spot.style.background = "rgba(255,0,128,0.5)";
     });
+}
 
-    loginBtn.addEventListener("click", () => {
-      authStatus.textContent = "";
-      authStatus.className = "status";
+function attemptStamp(num) {
+    let pin = prompt("Enter owner PIN");
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        authStatus.textContent = "Enter email and password.";
-        authStatus.classList.add("err");
+    if (pin !== OWNER_PIN) {
+        alert("Incorrect PIN");
         return;
-      }
+    }
 
-      const users = getUsers();
-      const key = email.toLowerCase();
-      const user = users[key];
+    addStamp(num);
+}
 
-      if (!user || user.password !== password) {
-        authStatus.textContent = "Wrong email or password.";
-        authStatus.classList.add("err");
-        return;
-      }
+function addStamp(num) {
+    let users = getUsers();
+    let stamps = users[currentUser].stamps;
 
-      currentUserEmail = email;
-      authStatus.textContent = "Logged in.";
-      authStatus.classList.add("ok");
+    if (!stamps.includes(num)) {
+        stamps.push(num);
+        saveUsers(users);
 
-      loginBtn.classList.add("hidden");
-      signupBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
+        let spot = document.getElementById("s" + num);
+        spot.style.background = "rgba(255,0,128,0.5)";
 
-      loadUser(email);
-    });
+        spawnHeart(spot);
+    }
+}
 
-    logoutBtn.addEventListener("click", () => {
-      currentUserEmail = null;
-      authStatus.textContent = "Logged out.";
-      authStatus.className = "status ok";
+function spawnHeart(spot) {
+    let heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤";
 
-      loginBtn.classList.remove("hidden");
-      signupBtn.classList.remove("hidden");
-      logoutBtn.classList.add("hidden");
+    let rect = spot.getBoundingClientRect();
+    heart.style.left = rect.left + "px";
+    heart.style.top = rect.top + "px";
 
-      renderStamps(0);
-      userInfo.textContent = "Not logged in.";
-    });
+    document.body.appendChild(heart);
 
-    // Admin stamp
-    stampBtn.addEventListener("click", () => {
-      adminStatus.textContent = "";
-      adminStatus.className = "status";
+    setTimeout(() => heart.remove(), 1000);
+}
+</script>
 
-      const pin = adminPinInput.value.trim();
-      const email = stampEmailInput.value.trim();
-
-      if (!pin || !email) {
-        adminStatus.textContent = "Enter PIN and customer email.";
-        adminStatus.classList.add("err");
-        return;
-      }
-
-      if (pin !== OWNER_PIN) {
-        adminStatus.textContent = "Incorrect PIN.";
-        adminStatus.classList.add("err");
-        return;
-      }
-
-      const users = getUsers();
-      const key = email.toLowerCase();
-
-      if (!users[key]) {
-        // create user with no password (owner-only customer)
-        users[key] = { password: "", stamps: 1 };
-      } else {
-        let stamps = users[key].stamps || 0;
-        stamps += 1;
-        if (stamps > 6) stamps = 6; // cap at 6
-        users[key].stamps = stamps;
-      }
-
-      saveUsers(users);
-
-      const stampsNow = users[key].stamps;
-      adminStatus.textContent = `Stamp added. ${email} now has ${stampsNow} stamp(s).`;
-      adminStatus.classList.add("ok");
-
-      // If this is the logged-in user, update their view + heart
-      if (currentUserEmail && currentUserEmail.toLowerCase() === key) {
-        loadUser(email);
-        showHeartOnStamp(stampsNow);
-      } else {
-        // Still show visually if viewing
-        renderStamps(stampsNow);
-        userInfo.textContent = `Viewing ${email} · Stamps: ${stampsNow}`;
-        showHeartOnStamp(stampsNow);
-      }
-    });
-
-    // Initial
-    renderStamps(0);
-  </script>
 </body>
 </html>
