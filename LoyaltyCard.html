@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Glossed Loyalty Card</title>
+
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -59,7 +60,7 @@
         height: 55px;
         border-radius: 50%;
         position: absolute;
-        background: rgba(255,255,255,0.0);
+        background: rgba(255,255,255,0);
         cursor: pointer;
     }
 
@@ -102,6 +103,7 @@
 </head>
 <body>
 
+<!-- LOGIN BOX -->
 <div class="container" id="authBox">
     <h2>Glossed Loyalty Login</h2>
     <input id="email" placeholder="Email">
@@ -110,6 +112,7 @@
     <button onclick="signup()">Sign Up</button>
 </div>
 
+<!-- CARD BOX -->
 <div class="container" id="cardBox" style="display:none;">
     <h2>Your Loyalty Card</h2>
 
@@ -129,35 +132,50 @@
 </div>
 
 <script>
-let currentUser = null;
 const OWNER_PIN = "3923";
+let currentUser = null;
+
+/* Load users safely */
+function getUsers() {
+    try {
+        return JSON.parse(localStorage.getItem("users")) || {};
+    } catch {
+        return {};
+    }
+}
 
 function saveUsers(users) {
     localStorage.setItem("users", JSON.stringify(users));
 }
 
-function getUsers() {
-    return JSON.parse(localStorage.getItem("users") || "{}");
-}
-
+/* SIGN UP */
 function signup() {
-    let email = email.value;
-    let pass = password.value;
+    let emailVal = email.value.trim();
+    let passVal = password.value.trim();
+
+    if (!emailVal || !passVal) {
+        alert("Enter email + password");
+        return;
+    }
+
     let users = getUsers();
 
-    if (users[email]) {
+    if (users[emailVal]) {
         alert("Account already exists");
         return;
     }
 
-    users[email] = { password: pass, stamps: [] };
+    users[emailVal] = { password: passVal, stamps: [] };
     saveUsers(users);
-    alert("Account created");
+
+    alert("Account created!");
 }
 
+/* LOGIN */
 function login() {
-    let emailVal = email.value;
-    let passVal = password.value;
+    let emailVal = email.value.trim();
+    let passVal = password.value.trim();
+
     let users = getUsers();
 
     if (!users[emailVal] || users[emailVal].password !== passVal) {
@@ -166,17 +184,21 @@ function login() {
     }
 
     currentUser = emailVal;
+
     authBox.style.display = "none";
     cardBox.style.display = "block";
+
     loadStamps();
 }
 
+/* LOGOUT */
 function logout() {
     currentUser = null;
     authBox.style.display = "block";
     cardBox.style.display = "none";
 }
 
+/* LOAD STAMPS */
 function loadStamps() {
     let users = getUsers();
     let stamps = users[currentUser].stamps;
@@ -187,6 +209,7 @@ function loadStamps() {
     });
 }
 
+/* PIN CHECK */
 function attemptStamp(num) {
     let pin = prompt("Enter owner PIN");
 
@@ -198,6 +221,7 @@ function attemptStamp(num) {
     addStamp(num);
 }
 
+/* ADD STAMP */
 function addStamp(num) {
     let users = getUsers();
     let stamps = users[currentUser].stamps;
@@ -213,6 +237,7 @@ function addStamp(num) {
     }
 }
 
+/* HEART ANIMATION */
 function spawnHeart(spot) {
     let heart = document.createElement("div");
     heart.classList.add("heart");
